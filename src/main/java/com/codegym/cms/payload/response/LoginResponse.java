@@ -2,6 +2,7 @@ package com.codegym.cms.payload.response;
 
 import org.springframework.lang.Nullable;
 
+import javax.servlet.http.Cookie;
 import javax.validation.constraints.NotBlank;
 
 public class LoginResponse {
@@ -9,17 +10,31 @@ public class LoginResponse {
     @NotBlank
     private String message;
 
-    @Nullable
-    private String token;
+    private Cookie cookie;
+
 
     public LoginResponse() {
         super();
     }
 
-    public LoginResponse(@NotBlank String message, String token) {
+    public LoginResponse(@NotBlank String message) {
         super();
         this.message = message;
-        this.token = token;
+
+    }
+
+    public LoginResponse(String message, Cookie cookie) {
+        this.message = message;
+
+        this.cookie = cookie;
+    }
+
+    public Cookie getCookie() {
+        return cookie;
+    }
+
+    public void setCookie(Cookie cookie) {
+        this.cookie = cookie;
     }
 
     public String getMessage() {
@@ -30,11 +45,5 @@ public class LoginResponse {
         this.message = message;
     }
 
-    public String getToken() {
-        return token;
-    }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
 }

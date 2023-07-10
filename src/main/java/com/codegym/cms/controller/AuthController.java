@@ -13,6 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @CrossOrigin(value = "*", maxAge = 3600)
@@ -30,7 +32,7 @@ public class AuthController {
     JwtTokenProvider tokenProvider;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         try {
             // Gọi hàm authenticate để xác thực thông tin đăng nhập
             Authentication authentication = authenticationManager
@@ -41,7 +43,10 @@ public class AuthController {
 
             // Gọi hàm tạo Token
             String token = tokenProvider.generateToken(authentication);
-            return new ResponseEntity<>(new LoginResponse("Đăng nhập thành công!", token), HttpStatus.OK);
+            Cookie cookie = new Cookie("accessToken", token);
+            cookie.setMaxAge(7 * 24 * 60 * 60);
+            cookie.setHttpOnly(true);
+            return new ResponseEntity<>(new LoginResponse("Đăng nhập thành công!",cookie), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(new LoginResponse("Đăng nhập thất bại!", null), HttpStatus.BAD_REQUEST);
