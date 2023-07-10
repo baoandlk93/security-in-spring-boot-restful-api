@@ -46,6 +46,7 @@ public class AuthController {
             Cookie cookie = new Cookie("accessToken", token);
             cookie.setMaxAge(7 * 24 * 60 * 60);
             cookie.setHttpOnly(true);
+            response.addCookie(cookie);
             return new ResponseEntity<>(new LoginResponse("Đăng nhập thành công!",cookie), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
