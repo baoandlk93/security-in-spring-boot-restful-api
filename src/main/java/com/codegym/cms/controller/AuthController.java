@@ -1,5 +1,8 @@
 package com.codegym.cms.controller;
 
+import com.codegym.cms.model.dto.UserDto;
+import com.codegym.cms.model.service.UserService;
+import com.codegym.cms.model.service.impl.UserServiceImpl;
 import com.codegym.cms.payload.request.LoginRequest;
 import com.codegym.cms.payload.response.LoginResponse;
 import com.codegym.cms.security.JwtTokenProvider;
@@ -10,7 +13,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -30,6 +35,8 @@ public class AuthController {
 
     @Autowired
     JwtTokenProvider tokenProvider;
+    @Autowired
+    UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
@@ -47,10 +54,19 @@ public class AuthController {
             cookie.setMaxAge(7 * 24 * 60 * 60);
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
-            return new ResponseEntity<>(new LoginResponse("Đăng nhập thành công!",cookie), HttpStatus.OK);
+            return new ResponseEntity<>(new LoginResponse("Đăng nhập thành công!", cookie), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(new LoginResponse("Đăng nhập thất bại!", null), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@Valid @RequestBody UserDto userDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        userService.save(userDto);
+        return new ResponseEntity<>(userDto,HttpStatus.OK);
     }
 }

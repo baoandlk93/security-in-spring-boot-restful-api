@@ -42,31 +42,31 @@ public class User {
     @Column(name = "email", length = 50, nullable = false)
     private String email;
 
-    @NotBlank
+
     @Column(name = "address", length = 255, nullable = false)
     private String address;
 
-    @NotBlank
+
     @Column(name = "phone", length = 12, nullable = false)
     private String phone;
 
-    @NotBlank
+
     @Column(name = "avatar",
-            columnDefinition = "text", nullable = true)
+            columnDefinition = "text")
     private String avatar;
 
-    @Column(name = "activated", nullable = true)
+    @Column(name = "activated")
     private Boolean activated;
 
-    @Column(name = "remember_token", length = 255, nullable = true)
+    @Column(name = "remember_token", length = 255)
     private String rememberToken;
 
     public User() {
     }
 
     public User(Integer id, @NotBlank String fullName, @NotBlank String username, @NotBlank String password,
-                @NotBlank String email, @NotBlank String address, @NotBlank String phone, @NotBlank String avatar,
-                @NotBlank Boolean activated, @NotBlank String rememberToken) {
+                @NotBlank String email,  String address,  String phone,  String avatar,
+                 Boolean activated,  String rememberToken) {
         super();
         this.id = id;
         this.fullName = fullName;
@@ -81,8 +81,8 @@ public class User {
     }
 
     public User(@NotBlank String fullName, @NotBlank String username, @NotBlank String password,
-                @NotBlank String email, @NotBlank String address, @NotBlank String phone, @NotBlank String avatar,
-                @NotBlank Boolean activated, @NotBlank String rememberToken) {
+                @NotBlank String email,  String address,  String phone,  String avatar,
+                 Boolean activated,  String rememberToken) {
         super();
         this.fullName = fullName;
         this.username = username;

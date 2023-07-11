@@ -1,8 +1,10 @@
 package com.codegym.cms.model.service.impl;
 
 import com.codegym.cms.model.dto.UserDto;
+import com.codegym.cms.model.entity.Role;
 import com.codegym.cms.model.entity.User;
 import com.codegym.cms.model.repository.UserRepository;
+import com.codegym.cms.model.service.RoleService;
 import com.codegym.cms.model.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -19,10 +21,12 @@ import java.util.stream.StreamSupport;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final RoleService roleService;
 
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, RoleService roleService) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
+        this.roleService = roleService;
     }
 
     @Override
@@ -46,6 +50,7 @@ public class UserServiceImpl implements UserService {
             String hashedPassword = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt(10));
             user.setPassword(hashedPassword);
         }
+        user.setActivated(true);
         userRepository.save(user);
     }
 
