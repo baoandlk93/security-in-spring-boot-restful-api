@@ -11,6 +11,6 @@ public interface UserService {
     UserDto getUserById(Integer userId);
     Iterable<UserDto> findAll();
     Optional<UserDto> findById(Integer id);
-    void save(UserDto userDto);
+    boolean save(UserDto userDto);
     void remove(Integer id);
 }

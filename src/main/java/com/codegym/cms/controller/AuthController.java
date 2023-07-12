@@ -66,7 +66,10 @@ public class AuthController {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        userService.save(userDto);
-        return new ResponseEntity<>(userDto,HttpStatus.OK);
+        if (!userService.save(userDto)){
+            return new ResponseEntity<>(new LoginResponse("Username is exist"),HttpStatus.CONFLICT);
+        }else {
+            return new ResponseEntity<>(userDto,HttpStatus.CREATED);
+        }
     }
 }

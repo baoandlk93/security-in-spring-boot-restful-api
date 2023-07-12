@@ -10,7 +10,7 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @NotBlank
     @Column(name = "name", length = 50, nullable = false)
@@ -23,18 +23,18 @@ public class Role {
     public Role() {
     }
 
-    public Role(Integer id, @NotBlank String name, @NotBlank String desc) {
+    public Role(Long id, @NotBlank String name, @NotBlank String desc) {
         super();
         this.id = id;
         this.name = name;
         this.desc = desc;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

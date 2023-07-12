@@ -9,9 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "users",
-        uniqueConstraints = {@UniqueConstraint(name = "users_uk",
-                columnNames = {"email", "phone"})})
+@Table(name = "users")
 public class User {
 
     @Id
@@ -65,8 +63,8 @@ public class User {
     }
 
     public User(Integer id, @NotBlank String fullName, @NotBlank String username, @NotBlank String password,
-                @NotBlank String email,  String address,  String phone,  String avatar,
-                 Boolean activated,  String rememberToken) {
+                @NotBlank String email, String address, String phone, String avatar,
+                Boolean activated, String rememberToken) {
         super();
         this.id = id;
         this.fullName = fullName;
@@ -81,8 +79,8 @@ public class User {
     }
 
     public User(@NotBlank String fullName, @NotBlank String username, @NotBlank String password,
-                @NotBlank String email,  String address,  String phone,  String avatar,
-                 Boolean activated,  String rememberToken) {
+                @NotBlank String email, String address, String phone, String avatar,
+                Boolean activated, String rememberToken) {
         super();
         this.fullName = fullName;
         this.username = username;

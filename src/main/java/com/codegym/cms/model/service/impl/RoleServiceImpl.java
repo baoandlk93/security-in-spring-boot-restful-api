@@ -30,14 +30,13 @@ public class RoleServiceImpl implements RoleService {
     public Iterable<RoleDto> findAll() {
         Iterable<Role> entities = roleRepository.findAll();
         return StreamSupport.stream(entities.spliterator(), true)
-                            .map(entity -> modelMapper.map(entity, RoleDto.class))
-                            .collect(Collectors.toList());
+                .map(entity -> modelMapper.map(entity, RoleDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<RoleDto> findById(Long id) {
-        Role entity = roleRepository.findById(id).orElse(null);
-        return Optional.ofNullable(modelMapper.map(entity, RoleDto.class));
+    public Optional<Role> findById(Long id) {
+        return roleRepository.findById(id);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.codegym.cms.model.service.impl;
 
+import com.codegym.cms.model.dto.RoleDto;
 import com.codegym.cms.model.dto.UserDto;
 import com.codegym.cms.model.entity.Role;
 import com.codegym.cms.model.entity.User;
@@ -11,8 +12,10 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -44,14 +47,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(UserDto userDto) {
+    public boolean save(UserDto userDto) {
         User user = modelMapper.map(userDto, User.class);
         if (!userDto.getPassword().isEmpty()) {
             String hashedPassword = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt(10));
             user.setPassword(hashedPassword);
         }
         user.setActivated(true);
+        Set<Role> roles = new HashSet<>();
+        Role role = roleService.findById(3L).get();
+        roles.add(role);
+        user.setRoles(roles);
+        if (userRepository.findByUsername(user.getUsername()) != null) {
+            return false;
+        }
         userRepository.save(user);
+        return true;
     }
 
     @Override

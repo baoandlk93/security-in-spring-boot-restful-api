@@ -21,8 +21,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 //    List<User> findByFullName(@Param("fullname") String fullname);
 
     @Query(nativeQuery = true,
-            value = "SELECT r.name FROM roles r " +
-                    "INNER JOIN users u ON r.id = u.role_id " +
+            value = "SELECT r.name  FROM roles r " +
+                    "JOIN users_roles ur ON ur.role_id = r.id " +
+                    "JOIN users u ON ur.user_id = u.id " +
                     "WHERE u.username = :username")
     List<String> findRolesByUsername(@Param("username") String username);
 }
