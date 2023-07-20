@@ -64,11 +64,11 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.addAllowedOrigin("*");
-        corsConfig.addAllowedHeader("*");
-        corsConfig.addAllowedMethod("*");
+        corsConfig.addAllowedOrigin("**");
+        corsConfig.addAllowedHeader("**");
+        corsConfig.addAllowedMethod("**");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/*", corsConfig);
+        source.registerCorsConfiguration("/**", corsConfig);
         return source;
     }
 
@@ -88,20 +88,27 @@ public class SecurityConfiguration {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeHttpRequests() // links start with /api/
-                .antMatchers("/api/**", "/api/auth/login") // perform segregate authorize
+                .antMatchers("/api/**", "/api/auth/login","api/car/list","api/car/detail/**") // perform segregate authorize
                 .permitAll();
 
         // Pages require login with role: ROLE_ADMIN.
         // If not login at admin role yet, redirect to /login
         http.authorizeHttpRequests()
-                .antMatchers("/api/role/**", "/api/user/**")
+                .antMatchers("/api/role/**", "/api/user/**","api/car/**")
                 .hasRole("ADMIN");
+        /*
+        any user have ROLE_EMPLOYEE
+         */
+        http.authorizeHttpRequests()
+                .antMatchers("/api/car/create","/api/car/delete/**")
+                .hasRole("EMPLOYEE");
 
         // Pages require login with role: ROLE_USER
         // If not login at user role yet, redirect to /login
         http.authorizeHttpRequests()
                 .antMatchers("/api/user/**")
-                .hasRole("USER");
+                .hasRole("CUSTOMER");
+
 
         // When user login with ROLE_USER, but try to
         // access pages require ROLE_ADMIN, redirect to /error-403

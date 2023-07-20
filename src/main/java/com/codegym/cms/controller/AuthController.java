@@ -22,7 +22,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-@CrossOrigin(value = "*", maxAge = 3600)
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
