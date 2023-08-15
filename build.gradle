@@ -11,6 +11,11 @@ sourceCompatibility = '17'
 repositories {
 	mavenCentral()
 }
+jar {
+	manifest {
+		attributes 'Main-Class': 'com.codegym.cms.Application' // Thay bằng tên lớp chính thực tế của bạn
+	}
+}
 
 dependencies {
 	implementation 'org.projectlombok:lombok:1.18.26'
